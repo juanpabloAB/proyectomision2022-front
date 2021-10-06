@@ -1,0 +1,65 @@
+﻿{
+   
+    "Productos": [
+        {
+            "ID producto": "400101",
+            "Descripción": "arandela",
+            "Valor Unitario": "100",
+            "Disponible": "Si"
+        },
+        {
+            "ID producto": "400102",
+            "Descripción": "bisagra",
+            "Valor Unitario": "250",
+            "Disponible": "no"
+        },
+        {
+            "ID producto": "400103",
+            "Descripción": "junta",
+            "Valor Unitario": "300",
+            "Disponible": "Si"
+        },
+        {
+            "ID producto": "400104",
+            "Descripción": "extractor",
+            "Valor Unitario": "15000",
+            "Disponible": "Si"
+        },
+        {
+            "ID producto": "400105",
+            "Descripción": "manivela",
+            "Valor Unitario": "20000",
+            "Disponible": "Si"
+        },
+        {
+            "ID producto": "400106",
+            "Descripción": "rodamiento",
+            "Valor Unitario": "30000",
+            "Disponible": "Si"
+        },
+        {
+            "ID producto": "400107",
+            "Descripción": "caja clavos",
+            "Valor Unitario": "15000",
+            "Disponible": "Si"
+        },
+        {
+            "ID producto": "400108",
+            "Descripción": "perno",
+            "Valor Unitario": "300",
+            "Disponible": "Si"
+        },
+        {
+            "ID producto": "400109",
+            "Descripción": "red",
+            "Valor Unitario": "10000",
+            "Disponible": "Si"
+        },
+        {
+            "ID producto": "400110",
+            "Descripción": "bomba",
+            "Valor Unitario": "40000",
+            "Disponible": "Si"
+        }
+    ]
+}
