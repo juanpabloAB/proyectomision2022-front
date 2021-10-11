@@ -1,8 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './features/auth'
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./features/auth";
+import serverReducer from "./features/server";
 
 export default configureStore({
   reducer: {
-    auth: counterReducer,
+    auth: authReducer,
+    server: serverReducer,
   },
-})
+});

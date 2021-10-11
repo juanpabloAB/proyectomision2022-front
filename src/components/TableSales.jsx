@@ -1,4 +1,7 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
+
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -26,54 +29,6 @@ import AddSale from './AddSale'
 function createData(nomcli,cedula,idarticulo,cantidad,idfactura,valor,iva) {
   return {nomcli,cedula,idarticulo,cantidad,idfactura,valor,iva};
 }
-
-const rows = [
-  createData('Jaime Francisco Aguayo González',104779958,22501,27,'F-446637',25637,'4871,03'),
-  createData('Andrea Chávez Heredia',109420978,37900,41,'F-359369',58768,'11165,92'),
-  createData('Ruth Silvana Cortés Lagunes',117394864,33854,92,'F-212056',40782,'7748,58'),
-  createData('Ariana de jesús Ramos',193515497,78962,15,'F-832726',45271,'8601,49'),
-  createData('Luis Felipe Delgado Barrón',102653644,51557,95,'F-545870',38667,'7346,73'),
-  createData('Hansel Andres Espejo Ramos',134409270,83225,41,'F-356516',14891,'2829,29'),
-  createData('Aniyensy Sarai Flores Aguilar',151971890,60329,2,'F-388499',88961,'16902,59'),
-  createData('Karla Paulette Flores Silva',125520764,36227,79,'F-999056',12651,'2403,69'),
-  createData('Montserrat Carolina García Arreguín',180808199,75457,35,'F-727666',95163,'18080,97'),
-  createData('Lisset Vianey García Orozco',130753832,72720,17,'F-502837',51043,'9698,17'),
-  createData('José Ignacio Gómez Vargas',108017212,74410,75,'F-278262',24727,'4698,13'),
-  createData('ROCIO GONZÁLEZ DÍAZ',194861767,94204,43,'F-265871',11699,'2222,81'),
-  createData('Cipriano Ariel González Trejo',143873434,78471,29,'F-121607',16483,'3131,77'),
-  createData('Miguel Alejandro Guerrero Padrés',187303801,63302,13,'F-704837',35244,'6696,36'),
-  createData('KARINA GUILLEN MARIN',195780555,53462,49,'F-499604',69674,'13238,06'),
-  createData('Danna Verónica Hernández González',122236993,10652,86,'F-809516',44843,'8520,17'),
-  createData('Jaime Daniel Hernández Palacios',177880940,14004,19,'F-804662',87657,'16654,83'),
-  createData('Miguel Ángel Hernández Prado',176384007,98144,13,'F-557094',67128,'12754,32'),
-  createData('Luis Fernando Herrera Arias',128597132,40154,98,'F-559336',83355,'15837,45'),
-  createData('Samanta Lara Agapito',163654652,21243,34,'F-761857',53384,'10142,96'),
-  createData('Julia Andrea Lunar Pérez',132549028,96263,92,'F-752605',89114,'16931,66'),
-  createData('María Maximov Cortés',159918206,13430,73,'F-531165',15359,'2918,21'),
-  createData('Pablo Meré Hidalgo',192391191,92621,26,'F-858466',92405,'17556,95'),
-  createData('Diana Laura Morales Gonzalez',137497131,43450,38,'F-256453',83334,'15833,46'),
-  createData('Yaír Jofrá Moreno Chávez',114176858,34850,67,'F-297396',46429,'8821,51'),
-  createData('Aelín Moreno Huitrón',139285293,31309,74,'F-619777',65071,'12363,49'),
-  createData('Jessica Liliana Moreno Reveles',107950018,86947,21,'F-906043',39698,'7542,62'),
-  createData('Eduardo Elihu Munguía González',145109373,32991,84,'F-560380',90452,'17185,88'),
-  createData('Itzel Nuñez Garcia',142409264,39003,56,'F-408965',45048,'8559,12'),
-  createData('Erandhi Claudel Ornelas Guzmán',110135940,77804,97,'F-766507',90596,'17213,24'),
-  createData('Adriana Azzeneth Ortega Romero',120680491,79495,98,'F-693527',46380,'8812,2'),
-  createData('Irma Carolina Parga Fuentes',107604664,90891,30,'F-612321',99134,'18835,46'),
-  createData('Alejandra Berenice Pérez Moreno',148500589,84433,24,'F-116889',86398,'16415,62'),
-  createData('Yail Tsayam Reyes Báez',110464078,22287,60,'F-114289',94771,'18006,49'),
-  createData('Esteban Reyes Saldaña',136236260,26100,21,'F-957321',83862,'15933,78'),
-  createData('Abigali Rodríguez Jiménez',149525630,47601,79,'F-951903',34367,'6529,73'),
-  createData('Pablo Yamild Rosiles Loeza',150426797,21635,17,'F-666444',77751,'14772,69'),
-  createData('aranxa Ruiz vasquez',100412892,86036,46,'F-241887',88997,'16909,43'),
-  createData('MITZI GUADALUPE SALDIVAR OMAÑA',103063355,97061,57,'F-547596',75653,'14374,07'),
-  createData('Mariana Sánchez Cid',103598988,60852,10,'F-890581',86477,'16430,63'),
-  createData('Daniel Torres Rojas',100435368,43557,10,'F-381876',69869,'13275,11'),
-  createData('JAIRO DAVID TRIANA AVILA',185526469,39905,33,'F-421469',55024,'10454,56'),
-  createData('Daniela Ivette Vega Hernández',135764004,56287,79,'F-393155',92321,'17540,99'),
-  createData('Rosa Luz Zamora Peinado',159798779,84495,88,'F-326404',48080,'9135,2'),
-  
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {return -1;}
@@ -109,12 +64,27 @@ const headCells = [
   {id: 'iva',numeric: true,disablePadding: false,label: 'IVA',},
 ];
 
+const usefetchMore = (setSales, url) => {
+  axios({
+    method: 'GET',
+    url: `${url}/sales`
+  }).then(res => {
+    const rows = [];
+    res.data.forEach(i=>{
+      rows.push(createData(i.name,i.personalId,i.productId,i.quantity,i.invoiceId,i.value,i.tax))
+    })
+    setSales(rows)
+  })
+}
+
 function EnhancedTableHead(props) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+  
+
 
   return (
     <TableHead>
@@ -204,7 +174,7 @@ const EnhancedTableToolbar = (props) => {
       
 
 
-        <AddSale></AddSale>   
+        <AddSale update={props.setUpdate}/>
     
       )}
     </Toolbar>
@@ -216,6 +186,13 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function DrawTable() {
+  const url = useSelector((state) => state.server.value);
+  const [sales, setSales] = useState([])
+  const [update, setUpdate] = useState()
+
+  useEffect(() => {
+    usefetchMore(setSales, url)
+  }, [])
   
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('cedula');
@@ -229,10 +206,9 @@ export default function DrawTable() {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.nomcli);
+      const newSelecteds = sales.map((n) => n.nomcli);
       setSelected(newSelecteds);
       return;
     }
@@ -276,12 +252,12 @@ export default function DrawTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sales.length) : 0;
 
   return (
     <Box sx={{ width: 1000 }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} update={setUpdate} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -294,12 +270,12 @@ export default function DrawTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={sales.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(sales, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.nomcli);
@@ -356,7 +332,7 @@ export default function DrawTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={sales.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

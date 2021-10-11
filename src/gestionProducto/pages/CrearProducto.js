@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col'
 import Header from "../../shared/Header";
 
 const CrearProducto = () => {
+
+    
     return (
         <div>
             <Row>

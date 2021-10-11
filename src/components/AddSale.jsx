@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
 import IconButton from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
@@ -24,10 +26,27 @@ const style = {
   height:500 
 };
 
-export default function TransitionsModal() {
+const addSale = (setOpen, url, data) => {
+  console.log(url)
+  axios({
+    method: 'POST',
+    url: `${url}/sales/new`,
+    data:data
+  }).then(res => {
+    console.log(res.data)
+    setOpen(false)
+  })
+}
+
+export default function TransitionsModal({setUpdate}) {
   const [open, setOpen] = React.useState(false);
+  const [data, setData] = React.useState({});
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const url = useSelector((state) => state.server.value);
+  console.log(setUpdate)
+  
+  const [loading, setLoading] = useState(false)
 
   return (
     <div>
@@ -50,29 +69,25 @@ export default function TransitionsModal() {
           <Typography id="transition-modal-title" variant="h6" component="h2">
               Agregar Nueva Venta
             </Typography>
-            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)'}}> 
-
-                <TextField disabled id="outlined-disabled" label="ID" defaultValue="1000000" size="small"
-                            sx={{m:2}}/>
+            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)'}}>                 
                 <TextField  id="outlined"  label="Nombre Cliente"size="small"
-                            sx={{m:2}}/>
+                            sx={{m:2}} onChange={e=>setData({...data, name:e.target.value})}/>
                 <TextField  id="outlined"  label="Cedula"size="small"
-                            sx={{m:2}}/>
+                            sx={{m:2}} onChange={e=>setData({...data, personalId:e.target.value})}/>
                 <TextField  id="outlined"  label="ID Articulo"size="small"
-                            sx={{m:2}}/>
+                            sx={{m:2}} onChange={e=>setData({...data, productId:e.target.value})}/>
                 <TextField  id="outlined"  label="Cantidad"size="small"
-                            sx={{m:2}}/>
+                            sx={{m:2}} onChange={e=>setData({...data, quantity:e.target.value})}/>
                 <TextField  id="outlined"  label="ID Factura"size="small"
-                            sx={{m:2}}/>
+                            sx={{m:2}} onChange={e=>setData({...data, invoiceId:e.target.value})}/>
                 <TextField  id="outlined"  label="Valor"size="small"
-                            sx={{m:2}}/>
+                            sx={{m:2}} onChange={e=>setData({...data, value:e.target.value})}/>
                 <TextField  id="outlined"  label="IVA"size="small"
-                            sx={{m:2}}/>
-                <IconButton sx = {{WebkitAlignItems:'center'}} className="btn-add-sale" onClick={handleClose} variant="contained">
+                            sx={{m:2}} onChange={e=>setData({...data, tax:e.target.value})}/>
+                <IconButton sx = {{WebkitAlignItems:'center'}} className="btn-add-sale" onClick={()=> addSale(setOpen, url, data)} variant="contained">
                     <AddIcon fontSize="large"/>Confirmar
                 </IconButton>  
-            </Box>
-  
+            </Box>  
           </Box>
         </Fade>
       </Modal>
