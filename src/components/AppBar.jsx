@@ -121,7 +121,7 @@ function people() {
         <Grid>
         <Fab size="small" color="primary" aria-label="add" >
           <br />
-          <AddIcon />
+          <AddUser><AddIcon /></AddUser>
         </Fab>
           <UserTable/>
         </Grid>

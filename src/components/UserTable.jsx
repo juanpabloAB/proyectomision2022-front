@@ -7,8 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Confirm from './confirm';
-import CreateIcon from '@mui/icons-material/Create';
-import IconButton from '@mui/material/IconButton';
+
 
 function createData(Nombre, Apellido, Rol, Status) {
   return {Nombre, Apellido, Rol, Status };
@@ -25,7 +24,7 @@ const rows = [
 export default function DenseTable() {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 6500 }} size="small" aria-label="a dense table">
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Nombre</TableCell>
@@ -46,7 +45,7 @@ export default function DenseTable() {
               <TableCell align="right">{row.Apellido}</TableCell>
               <TableCell align="right">{row.Rol}</TableCell>
               <TableCell align="right">{row.Status}</TableCell>
-              <TableCell align="right"><IconButton aria-label="Edit" ><CreateIcon /></IconButton><Confirm row={row}/></TableCell>
+              <TableCell align="right"><Confirm row={row}/></TableCell>
             </TableRow>
           ))}
         </TableBody>

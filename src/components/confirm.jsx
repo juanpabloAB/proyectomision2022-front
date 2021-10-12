@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
 
 export default function AlertDialog({row}) {
   const [open, setOpen] = React.useState(false);
@@ -21,6 +22,7 @@ export default function AlertDialog({row}) {
 
   return (
     <div>
+      <IconButton aria-label="Edit" onClick={handleClickOpen}><CreateIcon /></IconButton>
         <IconButton aria-label="delete" onClick={handleClickOpen}><DeleteIcon /></IconButton>
       <Dialog
         open={open}
@@ -29,7 +31,7 @@ export default function AlertDialog({row}) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+          {"Delete User"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -39,10 +41,11 @@ export default function AlertDialog({row}) {
         <DialogActions>
           <Button onClick={handleClose}>No</Button>
           <Button onClick={handleClose} autoFocus>
-            Yes
+            Yes 
           </Button>
         </DialogActions>
       </Dialog>
     </div>
+    
   );
 }
