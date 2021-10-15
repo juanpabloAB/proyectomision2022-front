@@ -141,10 +141,10 @@ export default function TransitionsModal(props) {
               sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
             >
               <TextField
-                id="name"
+                id="outlined"
                 label="Nombre"
                 size="small"
-                defaultValue={data.nomcli}
+                defaultValue={data.nombre}
                 sx={{ m: 2 }}
                 onChange={(e) => setData({ ...data, name: e.target.value })}
               />
