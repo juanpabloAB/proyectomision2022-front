@@ -141,7 +141,7 @@ export default function TransitionsModal(props) {
               sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
             >
               <TextField
-                id="outlined"
+                id="name"
                 label="Nombre"
                 size="small"
                 defaultValue={data.nomcli}
@@ -159,10 +159,21 @@ export default function TransitionsModal(props) {
                 }
               />
               <TextField
+                id="outlined"
+                label="ID"
+                size="small"
+                sx={{ m: 2 }}
+                defaultValue={data.cedula}
+                onChange={(e) =>
+                  setData({ ...data, personalId: e.target.value })
+                }
+              />
+              <TextField
                 id="outlined-select-currency"
                 select
                 label="Seleccione"
                 value={Rol}
+                sx={{ m: 2 }}
                 onChange={handleChange}
                 helperText="Seleccione el rol de usuario"
               >
@@ -177,6 +188,7 @@ export default function TransitionsModal(props) {
               select
               label="Seleccione"
               value={Estado}
+              sx={{ m: 2 }}
               onChange={handleChange2}
               helperText="Seleccione el Estado de usuario"
             >
@@ -190,6 +202,7 @@ export default function TransitionsModal(props) {
               <IconButton
                 sx={{ WebkitAlignItems: "center" }}
                 className="btn-add-sale"
+                sx={{ m: 2 }}
                 onClick={() => props.edit? updateUser(setOpen, url, data, props.handleUpdate)  :addUser(setOpen, url, data, props.handleUpdate)}
                 variant="contained"
               >
