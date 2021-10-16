@@ -7,6 +7,40 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Confirm from './confirm';
+import axios from "axios";
+
+//connection with Database
+const usefetchMore = (setUsers, url) => {
+  axios({
+    method: "GET",
+    url: `${url}/users`,
+  }).then((res) => {
+    const rows = [];
+    res.data.forEach((i) => {
+      rows.push(
+        createData(
+          i.ID,
+          i.Nombre,
+          i.Apellido,
+          i.Rol,
+          i.Status,
+        )
+      );
+    });
+    setUsers(rows);
+  });
+};
+const deleteUser = (url, selected, handleUpdate) => {
+  selected.forEach((i) => {
+    axios({
+      method: "DELETE",
+      url: `${url}/users/delete`,
+      data: i,
+    }).then((res) => {
+      handleUpdate();
+    });
+  });
+};
 
 
 function createData(ID,Nombre, Apellido, Rol, Status) {

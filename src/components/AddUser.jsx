@@ -12,6 +12,31 @@ import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import { UpdateDisabled } from "@mui/icons-material";
 import MenuItem from '@mui/material/MenuItem';
+import axios from "axios";
+
+//connection with Backend
+const addSale = (setOpen, url, data, handleUpdate) => {
+  
+  axios({
+    method: "POST",
+    url: `${url}/users/new`,
+    data: data,
+  }).then((res) => {
+    setOpen(false);
+    handleUpdate();
+  });
+};
+
+const updateSale = (setOpen, url, data, handleUpdate) => {
+  axios({
+    method: "PUT",
+    url: `${url}/users/edit`,
+    data: data,
+  }).then((res) => {
+    setOpen(false);
+    handleUpdate();
+  });
+};
 
 const Roles = [
   {
