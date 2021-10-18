@@ -12,7 +12,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import { UpdateDisabled } from "@mui/icons-material";
 import MenuItem from '@mui/material/MenuItem';
-import axios from "axios";
+
 
 //connection with Backend
 const addSale = (setOpen, url, data, handleUpdate) => {
