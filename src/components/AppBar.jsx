@@ -22,6 +22,7 @@ import GestionarProducto from "../gestionProducto/pages/GestionarProducto"
 import CrearProducto from './../gestionProducto/pages/CrearProducto';
 import Home from '../home/Home';
 
+
 export default function ClippedDrawer() {
   return (
     <Box sx={{ display: "flex" }}>
@@ -38,11 +39,13 @@ export default function ClippedDrawer() {
       </AppBar>
       <Menu />
       <div>
+      
         <Route exact path="/home" component={Home} />
         <Route exact path="/sales" component={Sales} />
         <Route exact path="/products" component={Products} />
         <Route exact path="/productNew" component={ProductNew} />
         <Route exact path="/people" component={people}/>
+        
         <Route exact path="/">
           <Home />
         </Route>

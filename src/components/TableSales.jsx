@@ -94,28 +94,34 @@ const headCells = [
   { id: "iva", numeric: true, disablePadding: false, label: "IVA" },
 ];
 
-const usefetchMore = (setSales, url) => {
+const usefetchMore = (setSales, url, token) => {
   axios({
     method: "GET",
     url: `${url}/sales`,
-  }).then((res) => {
-    const rows = [];
-    res.data.forEach((i) => {
-      rows.push(
-        createData(
-          i.name,
-          i.personalId,
-          i.productId,
-          i.quantity,
-          i.invoiceId,
-          i.value,
-          i.tax,
-          i._id
-        )
-      );
-    });
-    setSales(rows);
-  });
+    headers: {
+      Authorization: `${token}`,
+    },
+  })
+    .then((res) => {
+      const rows = [];
+      console.log(res.data)
+      res.data.forEach((i) => {
+        rows.push(
+          createData(
+            i.name,
+            i.personalId,
+            i.productId,
+            i.quantity,
+            i.invoiceId,
+            i.value,
+            i.tax,
+            i._id
+          )
+        );
+      });
+      setSales(rows);
+    })
+    .catch((e) => console.log(e));
 };
 
 function EnhancedTableHead(props) {
@@ -180,11 +186,14 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const deleteSale = (url, selected, handleUpdate) => {
+const deleteSale = (url, selected, handleUpdate, token) => {
   selected.forEach((i) => {
     axios({
       method: "DELETE",
       url: `${url}/sales/delete`,
+      headers: {
+        Authorization: `${token}`,
+      },
       data: i,
     }).then((res) => {
       handleUpdate();
@@ -195,6 +204,7 @@ const deleteSale = (url, selected, handleUpdate) => {
 const EnhancedTableToolbar = (props) => {
   const { numSelected, handleUpdate } = props;
   const url = useSelector((state) => state.server.value);
+  const auth = useSelector((state) => state.auth.value);
   return (
     <Toolbar
       sx={{
@@ -232,7 +242,9 @@ const EnhancedTableToolbar = (props) => {
       {numSelected.length > 0 ? (
         <Tooltip title="Delete">
           <IconButton
-            onClick={() => deleteSale(url, numSelected, handleUpdate)}
+            onClick={() =>
+              deleteSale(url, numSelected, handleUpdate, auth.token)
+            }
           >
             <DeleteIcon />
           </IconButton>
@@ -250,10 +262,11 @@ EnhancedTableToolbar.propTypes = {
 
 export default function DrawTable() {
   const url = useSelector((state) => state.server.value);
+  const auth = useSelector((state) => state.auth.value);
   const [sales, setSales] = useState([]);
 
   useEffect(() => {
-    usefetchMore(setSales, url);
+    usefetchMore(setSales, url, auth.token);
   }, []);
 
   const [order, setOrder] = React.useState("asc");
@@ -278,7 +291,7 @@ export default function DrawTable() {
   };
 
   const handleUpdate = (ev) => {
-    usefetchMore(setSales, url);
+    usefetchMore(setSales, url, auth.token);
   };
 
   const handleClick = (event, row) => {
@@ -382,7 +395,7 @@ export default function DrawTable() {
                       <TableCell align="right">{row.valor}</TableCell>
                       <TableCell align="right">{row.iva}</TableCell>
                       <TableCell align="right">
-                        <AddSale edit={row} handleUpdate={handleUpdate}/>
+                        <AddSale edit={row} handleUpdate={handleUpdate} />
                       </TableCell>
                     </TableRow>
                   );

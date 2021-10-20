@@ -27,11 +27,14 @@ const style = {
   height: 500,
 };
 
-const addSale = (setOpen, url, data, handleUpdate) => {
+const addSale = (setOpen, url, data, handleUpdate, token) => {
   
   axios({
     method: "POST",
     url: `${url}/sales/new`,
+    headers: {
+      Authorization: `${token}`,
+    },
     data: data,
   }).then((res) => {
     setOpen(false);
@@ -39,9 +42,12 @@ const addSale = (setOpen, url, data, handleUpdate) => {
   });
 };
 
-const updateSale = (setOpen, url, data, handleUpdate) => {
+const updateSale = (setOpen, url, data, handleUpdate, token) => {
   axios({
     method: "PUT",
+    headers: {
+      Authorization: `${token}`,
+    },
     url: `${url}/sales/edit`,
     data: data,
   }).then((res) => {
@@ -56,7 +62,7 @@ export default function TransitionsModal(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const url = useSelector((state) => state.server.value);
-
+  const auth = useSelector((state) => state.auth.value);
   const [loading, setLoading] = useState(false);
   
   return (
@@ -163,7 +169,7 @@ export default function TransitionsModal(props) {
               <IconButton
                 sx={{ WebkitAlignItems: "center" }}
                 className="btn-add-sale"
-                onClick={() => props.edit? updateSale(setOpen, url, data, props.handleUpdate)  :addSale(setOpen, url, data, props.handleUpdate)}
+                onClick={() => props.edit? updateSale(setOpen, url, data, props.handleUpdate, auth.token)  :addSale(setOpen, url, data, props.handleUpdate, auth.token)}
                 variant="contained"
               >
                 <AddIcon fontSize="medium" />
