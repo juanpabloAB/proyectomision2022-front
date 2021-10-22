@@ -100,7 +100,7 @@ export default function TransitionsModal(props) {
     <div>
       {props.edit ? (
         <Tooltip title="Delete">
-          <IconButton className="btn-add-sale"
+          <IconButton className="btn-add-user"
           onClick={handleOpen}
           variant="contained">
             <ModeEditIcon />
@@ -108,7 +108,7 @@ export default function TransitionsModal(props) {
         </Tooltip>
       ) : (
         <IconButton
-          className="btn-add-sale"
+          className="btn-add-user"
           onClick={handleOpen}
           variant="contained"
         >
@@ -139,9 +139,9 @@ export default function TransitionsModal(props) {
                 id="outlined"
                 label="Nombre"
                 size="small"
-                defaultValue={data.nombre}
+                defaultValue={data.Nombre}
                 sx={{ m: 2 }}
-                onChange={(e) => setData({ ...data, name: e.target.value })}
+                onChange={(e) => setData({ ...data, Nombre: e.target.value })}
               />
               <TextField
                 id="outlined"
@@ -150,7 +150,7 @@ export default function TransitionsModal(props) {
                 sx={{ m: 2 }}
                 defaultValue={data.Apellido}
                 onChange={(e) =>
-                  setData({ ...data, lastName: e.target.value })
+                  setData({ ...data, Apellido: e.target.value })
                 }
               />
               
@@ -161,7 +161,7 @@ export default function TransitionsModal(props) {
                 defaultValue={data.Rol}
                 sx={{ m: 2 }}
                 onChange={(e) =>
-                  setData({ ...data, role: e.target.value })
+                  setData({ ...data, Rol: e.target.value })
                 }
               />
               <TextField
@@ -170,7 +170,7 @@ export default function TransitionsModal(props) {
                 size="small"
                 sx={{ m: 2 }}
                 defaultValue={data.Estatus}
-                onChange={(e) => setData({ ...data, status: e.target.value })}
+                onChange={(e) => setData({ ...data, Estatus: e.target.value })}
               />
               <TextField
                 id="outlined"
@@ -179,7 +179,7 @@ export default function TransitionsModal(props) {
                 sx={{ m: 2 }}
                 defaultValue={data.idUser}
                 onChange={(e) =>
-                  setData({ ...data, userID: e.target.value })
+                  setData({ ...data, idUser: e.target.value })
                 }
               />
               <IconButton

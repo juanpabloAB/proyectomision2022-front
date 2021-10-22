@@ -24,16 +24,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
-import addUser from "./AddUser";
+import AddUser from "./AddUser";
 
 function createData(
-  nombre,
+  Nombre,
   Apellido,
   Rol,
   Estatus,
   idUser,
 ) {
-  return { nombre, Apellido, Rol, Estatus, idUser };
+  return { Nombre, Apellido, Rol, Estatus, idUser };
 }
 
 function descendingComparator(a, b, orderBy) {
@@ -68,7 +68,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "nombre",
+    id: "Nombre",
     numeric: false,
     disablePadding: true,
     label: "Nombre",
@@ -78,7 +78,7 @@ const headCells = [
     id: "Rol",
     numeric: true,
     disablePadding: false,
-    label: "ID Articulo",
+    label: "Rol",
   },
   { id: "Estatus", numeric: true, disablePadding: false, label: "Estatus" },
   {
@@ -103,11 +103,11 @@ const usefetchMore = (setUsers, url, token) => {
       res.data.forEach((i) => {
         rows.push(
           createData(
-            i.name,
-            i.lastName,
-            i.role,
-            i.status,
-            i.userID,
+            i.Nombre,
+            i.Apellido,
+            i.Rol,
+            i.Estatus,
+            i.idUser,
           )
         );
       });
@@ -242,7 +242,7 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <addUser handleUpdate={handleUpdate} />
+        <AddUser handleUpdate={handleUpdate} />
       )}
     </Toolbar>
   );
@@ -261,6 +261,10 @@ export default function DrawTable() {
     usefetchMore(setUsers, url, auth.token);
   }, []);
 
+  const handleUpdate = (ev) => {
+    usefetchMore(setUsers, url);
+  };
+
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("Apellido");
   const [selected, setSelected] = React.useState([]);
@@ -275,15 +279,11 @@ export default function DrawTable() {
   };
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.nombre);
+      const newSelecteds = users.map((n) => n.Nombre);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
-  };
-
-  const handleUpdate = (ev) => {
-    usefetchMore(setUsers, url, auth.token);
   };
 
   const handleClick = (event, row) => {
@@ -318,7 +318,7 @@ export default function DrawTable() {
     setDense(event.target.checked);
   };
 
-  const isSelected = (nombre) => selected.indexOf(nombre) !== -1;
+  const isSelected = (Nombre) => selected.indexOf(Nombre) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -360,7 +360,7 @@ export default function DrawTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.nombre}
+                      key={row.Nombre}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -378,14 +378,14 @@ export default function DrawTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.nombre}
+                        {row.Nombre}
                       </TableCell>
                       <TableCell align="right">{row.Apellido}</TableCell>
                       <TableCell align="right">{row.Rol}</TableCell>
                       <TableCell align="right">{row.Estatus}</TableCell>
                       <TableCell align="right">{row.idUser}</TableCell>
                       <TableCell align="right">
-                        <addUser edit={row} handleUpdate={handleUpdate} />
+                        <AddUser edit={row} handleUpdate={handleUpdate} />
                       </TableCell>
                     </TableRow>
                   );
