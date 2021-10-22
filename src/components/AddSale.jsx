@@ -106,7 +106,7 @@ export default function TransitionsModal(props) {
             >
               <TextField
                 id="outlined"
-                label="Nombre Cliente"
+                label="Nombre"
                 size="small"
                 defaultValue={data.nomcli}
                 sx={{ m: 2 }}

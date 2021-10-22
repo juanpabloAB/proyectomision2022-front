@@ -11,32 +11,6 @@ import { TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import { UpdateDisabled } from "@mui/icons-material";
-import MenuItem from '@mui/material/MenuItem';
-
-
-//connection with Backend
-const addSale = (setOpen, url, data, handleUpdate) => {
-  
-  axios({
-    method: "POST",
-    url: `${url}/users/new`,
-    data: data,
-  }).then((res) => {
-    setOpen(false);
-    handleUpdate();
-  });
-};
-
-const updateSale = (setOpen, url, data, handleUpdate) => {
-  axios({
-    method: "PUT",
-    url: `${url}/users/edit`,
-    data: data,
-  }).then((res) => {
-    setOpen(false);
-    handleUpdate();
-  });
-};
 
 const Roles = [
   {
@@ -68,6 +42,7 @@ const Estados = [
   }
 ];
 
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -83,11 +58,14 @@ const style = {
   height: 500,
 };
 
-const addUser = (setOpen, url, data, handleUpdate) => {
+const addUser = (setOpen, url, data, handleUpdate, token) => {
   
   axios({
     method: "POST",
     url: `${url}/users/new`,
+    headers: {
+      Authorization: `${token}`,
+    },
     data: data,
   }).then((res) => {
     setOpen(false);
@@ -95,9 +73,12 @@ const addUser = (setOpen, url, data, handleUpdate) => {
   });
 };
 
-const updateUser = (setOpen, url, data, handleUpdate) => {
+const updateUser = (setOpen, url, data, handleUpdate, token) => {
   axios({
     method: "PUT",
+    headers: {
+      Authorization: `${token}`,
+    },
     url: `${url}/users/edit`,
     data: data,
   }).then((res) => {
@@ -107,23 +88,12 @@ const updateUser = (setOpen, url, data, handleUpdate) => {
 };
 
 export default function TransitionsModal(props) {
-  
-  const [Rol, setRol] = React.useState(false);
-  const handleChange = (event) => {
-    setRol(event.target.value);
-  };
-
-  const [Estado, setEstado] = React.useState('Activo');
-  const handleChange2 = (event) => {
-    setEstado(event.target.value);
-  };
-
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState(props.edit?props.edit:{});
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const url = useSelector((state) => state.server.value);
-
+  const auth = useSelector((state) => state.auth.value);
   const [loading, setLoading] = useState(false);
   
   return (
@@ -160,7 +130,7 @@ export default function TransitionsModal(props) {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Agregar nuevo usuario
+              Agregar Nuevo Usuario
             </Typography>
             <Box
               sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
@@ -178,57 +148,44 @@ export default function TransitionsModal(props) {
                 label="Apellido"
                 size="small"
                 sx={{ m: 2 }}
-                defaultValue={data.cedula}
+                defaultValue={data.Apellido}
                 onChange={(e) =>
-                  setData({ ...data, personalId: e.target.value })
+                  setData({ ...data, lastName: e.target.value })
                 }
+              />
+              
+              <TextField
+                id="outlined-select-currency"
+                label="Rol"
+                size="small"
+                defaultValue={data.Rol}
+                sx={{ m: 2 }}
+                onChange={(e) =>
+                  setData({ ...data, role: e.target.value })
+                }
+              />
+              <TextField
+                id="outlined"
+                label="Estatus"
+                size="small"
+                sx={{ m: 2 }}
+                defaultValue={data.Estatus}
+                onChange={(e) => setData({ ...data, status: e.target.value })}
               />
               <TextField
                 id="outlined"
                 label="ID"
                 size="small"
                 sx={{ m: 2 }}
-                defaultValue={data.cedula}
+                defaultValue={data.idUser}
                 onChange={(e) =>
-                  setData({ ...data, personalId: e.target.value })
+                  setData({ ...data, userID: e.target.value })
                 }
               />
-              <TextField
-                id="outlined-select-currency"
-                select
-                label="Seleccione"
-                value={Rol}
-                sx={{ m: 2 }}
-                onChange={handleChange}
-                helperText="Seleccione el rol de usuario"
-              >
-                {Roles.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-              id="outlined-select-currency"
-              select
-              label="Seleccione"
-              value={Estado}
-              sx={{ m: 2 }}
-              onChange={handleChange2}
-              helperText="Seleccione el Estado de usuario"
-            >
-              {Estados.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-
               <IconButton
                 sx={{ WebkitAlignItems: "center" }}
                 className="btn-add-sale"
-                sx={{ m: 2 }}
-                onClick={() => props.edit? updateUser(setOpen, url, data, props.handleUpdate)  :addUser(setOpen, url, data, props.handleUpdate)}
+                onClick={() => props.edit? updateUser(setOpen, url, data, props.handleUpdate, auth.token)  :addUser(setOpen, url, data, props.handleUpdate, auth.token)}
                 variant="contained"
               >
                 <AddIcon fontSize="medium" />
