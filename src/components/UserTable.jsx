@@ -65,9 +65,9 @@ const headCells = [
     id: "Id",
     numeric: false,
     disablePadding: true,
-    label: "Nombre",
+    label: "Id",
   },
-  { id: "name", numeric: true, disablePadding: false, label: "Nomvre" },
+  { id: "name", numeric: true, disablePadding: false, label: "Nombre" },
   {
     id: "email",
     numeric: true,
