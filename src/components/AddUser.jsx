@@ -7,7 +7,7 @@ import {Box, Tooltip} from "@mui/material";
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { TextField } from "@mui/material";
+import { TextField, Checkbox } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import { UpdateDisabled } from "@mui/icons-material";
@@ -136,9 +136,9 @@ export default function TransitionsModal(props) {
               />
               <Checkbox
                         color="primary"
-                        checked={row.admin}
+                        checked={data.admin}
                         inputProps={{
-                          "aria-labelledby": labelId,
+                          
                         }}
                       />
 
