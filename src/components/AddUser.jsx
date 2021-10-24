@@ -134,14 +134,14 @@ export default function TransitionsModal(props) {
                   setData({ ...data, email: e.target.value })
                 }
               />
-              <TextField
-                id="outlined"
-                label="Admin?"
-                size="small"
-                sx={{ m: 2 }}
-                defaultValue={data.admin}
-                onChange={(e) => setData({ ...data, admin: e.target.value })}
-              />
+              <Checkbox
+                        color="primary"
+                        checked={row.admin}
+                        inputProps={{
+                          "aria-labelledby": labelId,
+                        }}
+                      />
+
               <IconButton
                 sx={{ WebkitAlignItems: "center" }}
                 className="btn-add-sale"
