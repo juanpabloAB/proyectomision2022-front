@@ -67,12 +67,12 @@ const headCells = [
     disablePadding: true,
     label: "Nombre",
   },
-  { id: "Nombre", numeric: true, disablePadding: false, label: "Apellido" },
+  { id: "name", numeric: true, disablePadding: false, label: "Nomvre" },
   {
     id: "email",
     numeric: true,
     disablePadding: false,
-    label: "Rol",
+    label: "E-Mail",
   },
   { id: "Admin", bool: true, disablePadding: false, label: "Admin" },
 ];
@@ -246,7 +246,7 @@ export default function DrawTable() {
   };
 
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("Apellido");
+  const [orderBy, setOrderBy] = React.useState("Nombre");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);

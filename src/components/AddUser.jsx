@@ -12,36 +12,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import { UpdateDisabled } from "@mui/icons-material";
 
-const Roles = [
-  {
-    value: 'Admin',
-    label: 'Admin',
-  },
-  {
-    value: 'Manager',
-    label: 'Manager',
-  },
-  {
-    value: 'Vendor',
-    label: 'Vendor',
-  },
-  {
-    value: 'Viewer',
-    label: 'Viewer',
-  }
-];
-
-const Estados = [
-  {
-    value: true,
-    label: 'Activo',
-  },
-  {
-    value: false,
-    label: 'Inactivo',
-  }
-];
-
 
 const style = {
   position: "absolute",
@@ -137,50 +107,40 @@ export default function TransitionsModal(props) {
             >
               <TextField
                 id="outlined"
-                label="Nombre"
+                label="Id"
                 size="small"
-                defaultValue={data.Nombre}
+                defaultValue={data.id}
                 sx={{ m: 2 }}
-                onChange={(e) => setData({ ...data, Nombre: e.target.value })}
+                onChange={(e) => setData({ ...data, id: e.target.value })}
               />
               <TextField
                 id="outlined"
-                label="Apellido"
+                label="Nombre Completo"
                 size="small"
                 sx={{ m: 2 }}
-                defaultValue={data.Apellido}
+                defaultValue={data.name}
                 onChange={(e) =>
-                  setData({ ...data, Apellido: e.target.value })
+                  setData({ ...data, name: e.target.value })
                 }
               />
               
               <TextField
                 id="outlined-select-currency"
-                label="Rol"
+                label="E-mail"
                 size="small"
-                defaultValue={data.Rol}
+                defaultValue={data.email}
                 sx={{ m: 2 }}
                 onChange={(e) =>
-                  setData({ ...data, Rol: e.target.value })
+                  setData({ ...data, email: e.target.value })
                 }
               />
               <TextField
                 id="outlined"
-                label="Estatus"
+                label="Admin?"
                 size="small"
                 sx={{ m: 2 }}
-                defaultValue={data.Estatus}
-                onChange={(e) => setData({ ...data, Estatus: e.target.value })}
-              />
-              <TextField
-                id="outlined"
-                label="ID"
-                size="small"
-                sx={{ m: 2 }}
-                defaultValue={data.idUser}
-                onChange={(e) =>
-                  setData({ ...data, idUser: e.target.value })
-                }
+                defaultValue={data.admin}
+                onChange={(e) => setData({ ...data, admin: e.target.value })}
               />
               <IconButton
                 sx={{ WebkitAlignItems: "center" }}
