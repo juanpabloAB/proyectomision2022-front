@@ -1,79 +1,139 @@
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Header from "../../shared/Header";
-import Table from 'react-bootstrap/Table';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Table from '@mui/material/Table';
+import axios from "axios";
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Typography from "@mui/material/Typography";
+import Checkbox from '@mui/material/Checkbox';
+import Toolbar from "@mui/material/Toolbar";
+import AddProduct from "./CrearProducto"
+import VerProducto from '../components/VerProducto'
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Busqueda from '../components/Busqueda';
 
-const GestionarProducto = () => {
-    return (
-        <div>
-            <Container>
-                <Row>
-                    <Col xs={8}>
-                        <h4 className="text-left mt-5 mb-5">Gestionar Productos</h4>
-                    </Col>
-                    <Col>
-                        <Link to="/productNew">
-                            <Button variant="primary">Crear Producto</Button>{' '}
-                        </Link>
-                    </Col>
-                </Row>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                        <th>ID Producto</th>
-                        <th>Descripción</th>
-                        <th>Valor Unitario</th>
-                        <th>Disponible</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>400101</td>
-                        <td>arandela</td>
-                        <td>100</td>
-                        <td>Si</td>
-                        </tr>
-                        <tr>
-                        <td>400102</td>
-                        <td>bisagra</td>
-                        <td>250</td>
-                        <td>no</td>
-                        </tr>
-                        <tr>
-                        <td>400103</td>
-                        <td>junta</td>
-                        <td>300</td>
-                        <td>Si</td>
-                        </tr>
-                        <tr>
-                        <td>400104</td>
-                        <td>extractor</td>
-                        <td>15000</td>
-                        <td>Si</td>
-                        </tr>
-                        <tr>
-                        <td>400105</td>
-                        <td>manivela</td>
-                        <td>20000</td>
-                        <td>Si</td>
-                        </tr>
-                        <tr>
-                        <td>400106</td>
-                        <td>rodamiento</td>
-                        <td>30000</td>
-                        <td>Si</td>
-                        </tr>
-                    </tbody>
-                    </Table>
+
+function createData(id, title, description, price, stock, aviable, link) {
+    return { id, title, description, price, stock, aviable, link };
+  }
+
+const usefetchMore = (setProducts, url) => {
+    axios({
+      method: "GET",
+      url: `${url}/products`,
+    }).then((res) => {
+      const rows = [];
+      res.data.forEach((i) => {
+        rows.push(
+          createData(
+            i._id,
+            i.title,
+            i.description,
+            i.price,
+            i.stock,
+            i.aviable,  
+            i.link          
+          )
+        );
+      });
+      setProducts(rows)
+    });
+  };
+
+export default function GestionaProducto() {
+    const url = useSelector((state) => state.server.value);
+    const [products, setProducts] = useState([]);
+    const [productsFilter, setProductsFilter] = useState([...products]);
+    const [open, setOpen] = useState(false);
+    const [sev,setSev] = useState()
+    const [res,setRes] = React.useState(null);
+    
+    useEffect(() => {
+      usefetchMore(setProducts, url);
+      usefetchMore(setProductsFilter, url);
+     }, []);
+    const handleUpdate = async (ev) => {
+      usefetchMore(setProducts, url);
+      usefetchMore(setProductsFilter, url);
+      setOpen(true)
+      if (ev.status == 201){
+        setSev("success");
+        setRes(ev.data);
+      }else{
+        setSev("error");
+        setRes("El producto NO ha sido creado");
+      }
+
+    };
+    
+
+  return (
+    <TableContainer component={Paper}>
+        <Busqueda products={products} setProducts={setProductsFilter} handleUpdate = {handleUpdate}/>
+      
+      <Collapse in={open}>
+        <Alert  action={ <IconButton size = 'small' onClick={() => {setOpen(false);}}>
+                        <CloseIcon fontSize="inherit"  />
+                        </IconButton>}
+                sx={{ mb: 2 }}
+                severity={sev}>
+          {res}
+        </Alert>
+      </Collapse>
+     
+
+    <Toolbar sx={{pl: { sm: 2 },pr: { xs: 1, sm: 1 },}}>
+       <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="div">
+          Lista de Productos
+        </Typography>
+          
+    </Toolbar>
+   
+      <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+        <TableHead>
+          <TableRow >
+            <TableCell align="right" colSpan={8}>
+              <AddProduct handleUpdate={handleUpdate}/>
+            </TableCell>
+          </TableRow >
+        <TableRow >
+            <TableCell>ID</TableCell>
+            <TableCell align="center">Nombre</TableCell>
+            <TableCell align="center">Descripción</TableCell>
+            <TableCell align="center">Precio</TableCell>
+            <TableCell align="center">Stock</TableCell>
+            <TableCell align="center">Disponible</TableCell>
+            <TableCell align="center">Visualización</TableCell>
+            <TableCell align="center">Editar</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {productsFilter.map((row) => (     
+          <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+              <TableCell component="th" scope="row">{row.id.substring(0,7)}</TableCell>  
+              <TableCell align="center">{row.title}</TableCell>
+              <TableCell align="center">{row.description}</TableCell>
+              <TableCell align="center">{row.price}</TableCell>
+              <TableCell align="center">{row.stock}</TableCell>
+              <TableCell align="center"><Checkbox checked = {row.aviable} /></TableCell>
+              <TableCell align="center"><VerProducto imagen = {row.link}/></TableCell>
+              <TableCell align="center"> <AddProduct edit={row} handleUpdate={handleUpdate}/></TableCell>
             
-            </Container>
-        </div>
-    );
-};
+          </TableRow>
+          ))}
+        </TableBody>      
+       
+      </Table>      
+      
+    </TableContainer>
+  );
+}
 
-
-
-export default GestionarProducto;
