@@ -23,7 +23,6 @@ export default App;
 
 function Main() {
   const auth = useSelector((state) => state.auth.value);
-  console.log(auth);
   if (auth !== false) {
     return <AppBar />;
   }

@@ -38,22 +38,29 @@ export default function AddProduct(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const url = useSelector((state) => state.server.value);
+  const auth = useSelector((state) => state.auth.value);
 
-  const addProduct = (setOpen, url, data, handleUpdate) => {
+  const addProduct = (setOpen, url, data, handleUpdate, token) => {
     axios({
     method: "POST",
     url: `${url}/products/new`,
     data: data,
+    headers: {
+      Authorization: `${token}`,
+    },
   }).then((res) => {
     setOpen(false);
     handleUpdate(res);
   });
 };
-const updateProduct = (setOpen, url, data, handleUpdate) => {
+const updateProduct = (setOpen, url, data, handleUpdate, token) => {
   axios({
     method: "PUT",
     url: `${url}/products/edit`,
     data: data,
+    headers: {
+      Authorization: `${token}`,
+    },
   }).then((res) => {
     setOpen(false);
     handleUpdate(res);
@@ -164,8 +171,8 @@ const updateProduct = (setOpen, url, data, handleUpdate) => {
             <IconButton
                 sx={{ px:3} }
                 className="btn-add-product"
-                onClick={() => props.edit? updateProduct(setOpen, url, data, props.handleUpdate)
-                                          :addProduct(setOpen, url, data, props.handleUpdate)}
+                onClick={() => props.edit? updateProduct(setOpen, url, data, props.handleUpdate, auth.token)
+                                          :addProduct(setOpen, url, data, props.handleUpdate, auth.token)}
                 variant="contained"
               >
                 <AddIcon fontSize="large" variant="contained" fullWidth/>

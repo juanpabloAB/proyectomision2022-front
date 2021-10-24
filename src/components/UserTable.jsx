@@ -26,14 +26,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
 import AddUser from "./AddUser";
 
-function createData(
-  Nombre,
-  Apellido,
-  Rol,
-  Estatus,
-  idUser,
-) {
-  return { Nombre, Apellido, Rol, Estatus, idUser };
+function createData(id, name, email, admin) {
+  return { id, name, email, admin };
 }
 
 function descendingComparator(a, b, orderBy) {
@@ -68,25 +62,19 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "Nombre",
+    id: "Id",
     numeric: false,
     disablePadding: true,
     label: "Nombre",
   },
-  { id: "Apellido", numeric: true, disablePadding: false, label: "Apellido" },
+  { id: "Nombre", numeric: true, disablePadding: false, label: "Apellido" },
   {
-    id: "Rol",
+    id: "email",
     numeric: true,
     disablePadding: false,
     label: "Rol",
   },
-  { id: "Estatus", numeric: true, disablePadding: false, label: "Estatus" },
-  {
-    id: "idUser",
-    numeric: true,
-    disablePadding: false,
-    label: "ID Usuario",
-  },
+  { id: "Admin", bool: true, disablePadding: false, label: "Admin" },
 ];
 
 const usefetchMore = (setUsers, url, token) => {
@@ -99,17 +87,9 @@ const usefetchMore = (setUsers, url, token) => {
   })
     .then((res) => {
       const rows = [];
-      console.log(res.data)
+      console.log(res.data);
       res.data.forEach((i) => {
-        rows.push(
-          createData(
-            i.Nombre,
-            i.Apellido,
-            i.Rol,
-            i.Estatus,
-            i.idUser,
-          )
-        );
+        rows.push(createData(i._id, i.name, i.email, i.admin));
       });
       setUsers(rows);
     })
@@ -242,7 +222,7 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <AddUser handleUpdate={handleUpdate} />
+        <div></div>
       )}
     </Toolbar>
   );
@@ -378,12 +358,19 @@ export default function DrawTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.Nombre}
+                        {row.id}
                       </TableCell>
-                      <TableCell align="right">{row.Apellido}</TableCell>
-                      <TableCell align="right">{row.Rol}</TableCell>
-                      <TableCell align="right">{row.Estatus}</TableCell>
-                      <TableCell align="right">{row.idUser}</TableCell>
+                      <TableCell align="right">{row.name}</TableCell>
+                      <TableCell align="right">{row.email}</TableCell>
+                      <TableCell align="right">
+                        <Checkbox
+                          color="primary"
+                          checked={row.admin}
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
                       <TableCell align="right">
                         <AddUser edit={row} handleUpdate={handleUpdate} />
                       </TableCell>

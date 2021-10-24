@@ -104,7 +104,6 @@ const usefetchMore = (setSales, url, token) => {
   })
     .then((res) => {
       const rows = [];
-      console.log(res.data)
       res.data.forEach((i) => {
         rows.push(
           createData(

@@ -25,10 +25,13 @@ function createData(id, title, description, price, stock, aviable, link) {
     return { id, title, description, price, stock, aviable, link };
   }
 
-const usefetchMore = (setProducts, url) => {
+const usefetchMore = (setProducts, url, token) => {
     axios({
       method: "GET",
       url: `${url}/products`,
+      headers: {
+        Authorization: `${token}`,
+      },
     }).then((res) => {
       const rows = [];
       res.data.forEach((i) => {
@@ -50,6 +53,7 @@ const usefetchMore = (setProducts, url) => {
 
 export default function GestionaProducto() {
     const url = useSelector((state) => state.server.value);
+    const auth = useSelector((state) => state.auth.value);
     const [products, setProducts] = useState([]);
     const [productsFilter, setProductsFilter] = useState([...products]);
     const [open, setOpen] = useState(false);
@@ -57,12 +61,12 @@ export default function GestionaProducto() {
     const [res,setRes] = React.useState(null);
     
     useEffect(() => {
-      usefetchMore(setProducts, url);
-      usefetchMore(setProductsFilter, url);
+      usefetchMore(setProducts, url, auth.token);
+      usefetchMore(setProductsFilter, url, auth.token);
      }, []);
     const handleUpdate = async (ev) => {
-      usefetchMore(setProducts, url);
-      usefetchMore(setProductsFilter, url);
+      usefetchMore(setProducts, url, auth.token);
+      usefetchMore(setProductsFilter, url, auth.token);
       setOpen(true)
       if (ev.status == 201){
         setSev("success");

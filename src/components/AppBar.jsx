@@ -86,7 +86,6 @@ const Item = styled(Paper)(({ theme }) => ({
 // codigo Vlad
 
 function Products() {
-  console.log("products");
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
@@ -98,7 +97,6 @@ function Products() {
 }
 
 function ProductNew() {
-  console.log("product new");
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
@@ -122,10 +120,6 @@ function people() {
       flexGrow: 1, p: 3 }}>
       <Toolbar />
         <Grid>
-        <Fab size="small" color="primary" aria-label="add" >
-          <br />
-          <AddUser><AddIcon /></AddUser>
-        </Fab>
           <UserTable/>
         </Grid>
     </Box>
