@@ -138,8 +138,12 @@ export default function TransitionsModal(props) {
                         color="primary"
                         checked={data.admin}
                         inputProps={{
-                          
+                          "aria-labelledby": labelId,
                         }}
+                        defaultValue={data.email}
+                        onChange={(e) =>
+                          setData({ ...data, email: e.target.value })
+                        }
                       />
 
               <IconButton
