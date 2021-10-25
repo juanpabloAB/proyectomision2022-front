@@ -372,6 +372,15 @@ export default function DrawTable() {
                         />
                       </TableCell>
                       <TableCell align="right">
+                        <Checkbox
+                          color="primary"
+                          checked={row.active}
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell align="right">
                         <AddUser edit={row} handleUpdate={handleUpdate} />
                       </TableCell>
                     </TableRow>

@@ -65,7 +65,8 @@ export default function TransitionsModal(props) {
   const url = useSelector((state) => state.server.value);
   const auth = useSelector((state) => state.auth.value);
   const [loading, setLoading] = useState(false);
-  
+
+
   return (
     <div>
       {props.edit ? (
@@ -137,15 +138,19 @@ export default function TransitionsModal(props) {
               <Checkbox
                         color="primary"
                         checked={data.admin}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
-                        defaultValue={data.email}
+                        defaultValue={data.admin}
                         onChange={(e) =>
-                          setData({ ...data, email: e.target.value })
+                          setData({ ...data, admin: e.target.value })
                         }
                       />
-
+              <Checkbox
+                        color="primary"
+                        checked={data.active}
+                        defaultValue={data.active}
+                        onChange={(e) =>
+                          setData({ ...data, active: e.target.value })
+                        }
+                      />
               <IconButton
                 sx={{ WebkitAlignItems: "center" }}
                 className="btn-add-sale"
