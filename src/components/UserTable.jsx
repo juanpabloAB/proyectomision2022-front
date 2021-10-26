@@ -26,8 +26,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
 import AddUser from "./AddUser";
 
-function createData(id, name, email, admin) {
-  return { id, name, email, admin };
+function createData(id, name, email, admin, active) {
+  return { id, name, email, admin, active };
 }
 
 function descendingComparator(a, b, orderBy) {
@@ -75,6 +75,7 @@ const headCells = [
     label: "E-Mail",
   },
   { id: "Admin", bool: true, disablePadding: false, label: "Admin" },
+  { id: "Active", bool: true, disablePadding: false, label: "Active" },
 ];
 
 const usefetchMore = (setUsers, url, token) => {
@@ -87,11 +88,13 @@ const usefetchMore = (setUsers, url, token) => {
   })
     .then((res) => {
       const rows = [];
-      console.log(res.data);
-      res.data.forEach((i) => {
-        rows.push(createData(i._id, i.name, i.email, i.admin));
-      });
-      setUsers(rows);
+      
+      if (res.data.length > 0) {
+        res.data.forEach((i) => {
+          rows.push(createData(i._id, i.name, i.email, i.admin, i.active));
+        });
+        setUsers(rows);
+      }
     })
     .catch((e) => console.log(e));
 };
@@ -236,13 +239,14 @@ export default function DrawTable() {
   const url = useSelector((state) => state.server.value);
   const auth = useSelector((state) => state.auth.value);
   const [users, setUsers] = useState([]);
-
+  
   useEffect(() => {
     usefetchMore(setUsers, url, auth.token);
   }, []);
 
   const handleUpdate = (ev) => {
-    usefetchMore(setUsers, url);
+    
+    usefetchMore(setUsers, url, auth.token);
   };
 
   const [order, setOrder] = React.useState("asc");
@@ -344,8 +348,10 @@ export default function DrawTable() {
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
+                        
                         <Checkbox
                           color="primary"
+                          
                           checked={isItemSelected}
                           inputProps={{
                             "aria-labelledby": labelId,

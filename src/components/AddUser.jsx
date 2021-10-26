@@ -28,21 +28,6 @@ const style = {
   height: 500,
 };
 
-const addUser = (setOpen, url, data, handleUpdate, token) => {
-  
-  axios({
-    method: "POST",
-    url: `${url}/users/new`,
-    headers: {
-      Authorization: `${token}`,
-    },
-    data: data,
-  }).then((res) => {
-    setOpen(false);
-    handleUpdate();
-  });
-};
-
 const updateUser = (setOpen, url, data, handleUpdate, token) => {
   axios({
     method: "PUT",
@@ -135,26 +120,31 @@ export default function TransitionsModal(props) {
                   setData({ ...data, email: e.target.value })
                 }
               />
+              <div>Admin
               <Checkbox
                         color="primary"
+                        
                         checked={data.admin}
                         defaultValue={data.admin}
-                        onChange={(e) =>
-                          setData({ ...data, admin: e.target.value })
+                        onChange={(e, isChecked) =>
+                          setData({ ...data, admin: isChecked })
                         }
                       />
+                      </div>
+                      <div>Active
               <Checkbox
                         color="primary"
                         checked={data.active}
                         defaultValue={data.active}
-                        onChange={(e) =>
-                          setData({ ...data, active: e.target.value })
+                        onChange={(e, isChecked) =>
+                          setData({ ...data, active: isChecked })
                         }
                       />
+                      </div>
               <IconButton
                 sx={{ WebkitAlignItems: "center" }}
                 className="btn-add-sale"
-                onClick={() => props.edit? updateUser(setOpen, url, data, props.handleUpdate, auth.token)  :addUser(setOpen, url, data, props.handleUpdate, auth.token)}
+                onClick={() => updateUser(setOpen, url, data, props.handleUpdate, auth.token)}
                 variant="contained"
               >
                 <AddIcon fontSize="medium" />
