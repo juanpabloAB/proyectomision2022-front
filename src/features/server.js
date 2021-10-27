@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const counterSlice = createSlice({
   name: "server",
   initialState: {
-    value: "http://localhost:3030",
+    value: 'https://mision2022-crackcoders.herokuapp.com',//"http://localhost:3030",
     sales: false,
   },
   reducers: {
